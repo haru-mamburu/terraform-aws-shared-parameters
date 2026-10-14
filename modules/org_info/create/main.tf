@@ -1,3 +1,9 @@
+module "discover" {
+  count = var.org_info == null ? 1 : 0
+
+  source = "../discover"
+}
+
 module "naming_conventions" {
   source  = "fivexl/naming-conventions/aws"
   version = "0.1.1"
@@ -7,6 +13,7 @@ module "shared_parameters" {
   source   = "../../shared_parameter"
   for_each = local.org_info
 
+  region                   = var.region
   parameter_name           = module.naming_conventions.org_info_ssm_parametes_names[each.key]
   resource_share_name      = module.naming_conventions.org_info_ram_resource_share_names[each.key]
   parameter_description    = "Shared SSM parameter for ${each.key}"
